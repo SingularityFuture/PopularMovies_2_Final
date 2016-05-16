@@ -55,6 +55,7 @@ public class ImageAdapter extends ArrayAdapter<MovieClass> {
 
         MovieClass item = mGridData.get(position);
         Picasso.with(mContext).load(item.getPoster()).into(imageView);
+
         return imageView;
     }
 }
