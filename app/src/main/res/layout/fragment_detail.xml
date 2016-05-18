@@ -5,7 +5,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:fillViewport="true"
-    tools:context="michael.popularmoviestest.DetailActivity.DetailFragment">
+    tools:context="michael.popularmoviestest.DetailFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -68,6 +68,15 @@
         android:textSize="12sp"
         android:id="@+id/detail_trailer" />
 
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/detail_imageview"
+            android:layout_below="@id/detail_trailer"
+            android:progressDrawable="@drawable/circular_progress_bar" />
+
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,7 +92,7 @@
             android:id="@+id/add_favorite"
             android:text="Add Favorite"
             android:layout_below="@+id/detail_reviews"
-            android:onClick="onClickAddFavorite"/>
+            />
 
     </RelativeLayout>
 

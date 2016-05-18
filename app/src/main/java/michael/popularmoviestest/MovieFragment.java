@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -36,11 +37,15 @@ public class MovieFragment extends Fragment{
 
     private ArrayList<michael.popularmoviestest.MovieClass> moviesData;
 
+    private GridView gridView;
+
+    private ProgressBar spinner;
+
     public interface Callback {
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(ArrayList<String> moviesArray);
+        void onItemSelected(ArrayList<String> moviesArray);
     }
 
     public MovieFragment() {
@@ -57,38 +62,60 @@ public class MovieFragment extends Fragment{
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         // Get a reference to the GridView, and attach this adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movies);
+        gridView = (GridView) rootView.findViewById(R.id.gridview_movies);
         moviesData = new ArrayList<>();
         mAdapter = new ImageAdapter(getActivity(), R.id.grid_item_movies_imageview, moviesData);
         gridView.setAdapter(mAdapter);
+
+        spinner = (ProgressBar) rootView.findViewById(R.id.progressBar1);  // Get the progress spinner.
+        spinner.setVisibility(View.VISIBLE);
 
 /*        if (moviesData.size() == 0) {
             Toast.makeText(getContext(),
                     "No Favorites to Show", Toast.LENGTH_SHORT).show();
         }*/
 
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
+           @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                MovieClass moviesStrings = moviesData.get(position);
-                ArrayList<String> moviesArray = new ArrayList<>();
-                moviesArray.add(moviesStrings.getPoster());
-                moviesArray.add(moviesStrings.getTitle());
-                moviesArray.add(moviesStrings.getOverview());
-                moviesArray.add(moviesStrings.getVoter_average());
-                moviesArray.add(moviesStrings.getRelease_date());
-                moviesArray.add(moviesStrings.getID());
+               MovieClass moviesStrings = moviesData.get(position);
+               ArrayList<String> moviesArray = new ArrayList<>();
 
-                ((Callback) getActivity())
-                        .onItemSelected(moviesArray);
+               moviesArray.add(moviesStrings.getPoster());
+               moviesArray.add(moviesStrings.getTitle());
+               moviesArray.add(moviesStrings.getOverview());
+               moviesArray.add(moviesStrings.getVoter_average());
+               moviesArray.add(moviesStrings.getRelease_date());
+               moviesArray.add(moviesStrings.getID());
 
-/*                Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putStringArrayListExtra("movies_strings", moviesArray);
-                startActivity(intent);*/
-            }
+               ((Callback) getActivity())
+                       .onItemSelected(moviesArray);
+           }
         });
 
+/*        ViewTreeObserver vto = gridView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    gridView.getViewTreeObserver()
+                            .removeGlobalOnLayoutListener(this);
+                } else {
+                    gridView.getViewTreeObserver()
+                            .removeOnGlobalLayoutListener(this);
+                }
+                gridView.setItemChecked(0,true);
+                //gridView.setSelection(10);
+                int index = gridView.getFirstVisiblePosition();
+                if(gridView.getChildAt(index).isSelected()){
+                    Toast.makeText(getContext(), index +
+                            " is visible.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });*/
+
+        //View mainView = inflater.inflate(R.layout.fragment_main, container, false);
         return rootView;
     }
 
@@ -271,8 +298,18 @@ public class MovieFragment extends Fragment{
         @Override
         protected void onPostExecute(Integer result) {
             if(moviesData!=null){
+                spinner.setVisibility(View.GONE);
                 mAdapter.setGridData(moviesData);
                 mAdapter.notifyDataSetChanged();
+/*                gridView.smoothScrollToPosition(10);
+                gridView.setItemChecked(0,true);
+                //gridView.setSelection(10);
+                int index = gridView.getFirstVisiblePosition();
+                if (gridView.getChildAt(index).isSelected()){
+                    Toast.makeText(getContext(), index +
+                            " is visible.", Toast.LENGTH_SHORT).show();
+                }*/
+
             }
             else
                 Toast.makeText(getActivity(), "Couldn't get data", Toast.LENGTH_SHORT).show();

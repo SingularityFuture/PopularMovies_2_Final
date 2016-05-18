@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             // fragment transaction.
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_detail_container, new DetailActivity.DetailFragment(), DETAILFRAGMENT_TAG)
+                        .replace(R.id.movie_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
                         .commit();
+                // onItemSelected(moviesArray);
             }
         }
         else {
@@ -68,8 +69,10 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             Bundle args = new Bundle();
             args.putStringArrayList("movie_strings", moviesArray);
 
-            DetailActivity.DetailFragment fragment = new DetailActivity.DetailFragment();
+            DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
+
+
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
